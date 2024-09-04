@@ -41,7 +41,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.Assert.assertEquals;
 
 import java.lang.reflect.Field;
 import java.time.Instant;
@@ -128,7 +128,7 @@ public class ProjectManagerTests extends RefineTest {
     // TODO test registerProject in race condition
 
     @Test
-    public void canEnsureProjectSave() {
+    public void canEnsureProjectSave() throws Exception {
         whenGetSaveTimes(project, metadata);
         registerProject();
 
@@ -137,11 +137,7 @@ public class ProjectManagerTests extends RefineTest {
 
         // assert and verify
         AssertProjectRegistered();
-        try {
-            verify(SUT, times(1)).saveMetadata(metadata, project.id);
-        } catch (Exception e) {
-            Assert.fail();
-        }
+        verify(SUT, times(1)).saveMetadata(metadata, project.id);
         this.verifySaveTimeCompared(1);
         verify(SUT, times(1)).saveProject(project);
         verify(metadata, times(1)).getTags();
@@ -242,8 +238,8 @@ public class ProjectManagerTests extends RefineTest {
     }
 
     protected void AssertProjectRegistered() {
-        Assert.assertEquals(SUT.getProject(project.id), project);
-        Assert.assertEquals(SUT.getProjectMetadata(project.id), metadata);
+        assertEquals(SUT.getProject(project.id), project);
+        assertEquals(SUT.getProjectMetadata(project.id), metadata);
     }
 
     protected void whenGetSaveTimes(Project proj, ProjectMetadata meta) {
