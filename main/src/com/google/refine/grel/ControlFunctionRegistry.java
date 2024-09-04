@@ -57,6 +57,7 @@ import com.google.refine.expr.functions.arrays.Join;
 import com.google.refine.expr.functions.arrays.Reverse;
 import com.google.refine.expr.functions.arrays.Sort;
 import com.google.refine.expr.functions.arrays.Uniques;
+import com.google.refine.expr.functions.arrays.Zip;
 import com.google.refine.expr.functions.booleans.And;
 import com.google.refine.expr.functions.booleans.Not;
 import com.google.refine.expr.functions.booleans.Or;
@@ -112,6 +113,7 @@ import com.google.refine.expr.functions.strings.Find;
 import com.google.refine.expr.functions.strings.Fingerprint;
 import com.google.refine.expr.functions.strings.IndexOf;
 import com.google.refine.expr.functions.strings.LastIndexOf;
+import com.google.refine.expr.functions.strings.LevenshteinDistance;
 import com.google.refine.expr.functions.strings.MD5;
 import com.google.refine.expr.functions.strings.Match;
 import com.google.refine.expr.functions.strings.NGram;
@@ -265,6 +267,7 @@ public class ControlFunctionRegistry {
         registerFunction("ngram", new NGram());
         registerFunction("match", new Match());
         registerFunction("find", new Find());
+        registerFunction("levenshteinDistance", new LevenshteinDistance());
 
         registerFunction("parseUri", new ParseUri());
 
@@ -292,6 +295,7 @@ public class ControlFunctionRegistry {
         registerFunction("sort", new Sort());
         registerFunction("uniques", new Uniques());
         registerFunction("inArray", new InArray());
+        registerFunction("zip", new Zip());
 
         registerFunction("now", new Now());
         registerFunction("inc", new Inc());

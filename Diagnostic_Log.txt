@@ -1,0 +1,145 @@
+2024-08-12 6:01:32.261 application:didFinishLaunchingWithOptions
+2024-08-12 6:01:32.293 Restore state during app launch
+2024-08-12 6:01:32.294 restoreStateFromDisk begin
+2024-08-12 6:01:32.294 restoreStateFromDisk filename: /private/var/mobile/Containers/Shared/AppGroup/3C3D10B9-3389-4C87-8403-6E7B137591E2/LastPass/restore_state
+2024-08-12 6:01:32.296 Restore fail: Error Domain=NSCocoaErrorDomain Code=260 "The file “restore_state” couldn’t be opened because there is no such file." UserInfo={NSFilePath=/private/var/mobile/Containers/Shared/AppGroup/3C3D10B9-3389-4C87-8403-6E7B137591E2/LastPass/restore_state, NSUnderlyingError=0x301d65b00 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}
+2024-08-12 6:01:32.296 clearSharedInstance shared_lputil is already cleared
+2024-08-12 6:01:32.296 Missing lputil localUsernameHash in UserPreferences for key: feature_ia_vault
+2024-08-12 6:01:32.297 LastPassModel restoreState, isOmarIA: YES
+2024-08-12 6:01:32.298 restoreState @autoreleasepool block begin
+2024-08-12 6:01:32.299 restoreState @autoreleasepool block end
+2024-08-12 6:01:32.299 Missing lputil localUsernameHash in UserPreferences for key: lp_logout_on_close
+2024-08-12 6:01:32.300 AppDelegate restoreState_needToLogout, lp_logout_on_close: false
+2024-08-12 6:01:32.307 FilePersistenceService - ERROR READING FILE /private/var/mobile/Containers/Shared/AppGroup/3C3D10B9-3389-4C87-8403-6E7B137591E2/LastPass/paymentRecords Error The file “paymentRecords” couldn’t be opened because there is no such file.
+2024-08-12 6:01:32.311 userInterfaceStyle: Dark
+2024-08-12 6:01:32.312 swizzled_pushViewController - Log message: ViewController pushed: LastPass.SecurityViewController with title: (null)
+2024-08-12 6:01:32.317 swizzled_pushViewController - Log message: ViewController pushed: LastPass.GoPremiumViewController with title: (null)
+2024-08-12 6:01:32.318 swizzled_pushViewController - Log message: ViewController pushed: LastPass.EmergencyViewController with title: (null)
+2024-08-12 6:01:32.320 swizzled_pushViewController - Log message: ViewController pushed: LastPass.LoginViewController with title: (null)
+2024-08-12 6:01:32.322 swizzled_pushViewController - Log message: ViewController pushed: LastPass.RootSettingsViewController with title: (null)
+2024-08-12 6:01:32.333 Missing lputil localUsernameHash in UserPreferences for key: lp_logoffbackground
+2024-08-12 6:01:32.334 Missing lputil localUsernameHash in UserPreferences for key: logoff_idle_timeout
+2024-08-12 6:01:32.334 Missing lputil localUsernameHash in UserPreferences for key: pin_idle_timeout
+2024-08-12 6:01:32.334 resetIdleTimer logoff_timeout = 0, lock_screen_timeout = -1
+2024-08-12 6:01:32.342 Missing lputil localUsernameHash in UserPreferences for key: lp_autofill_enabled
+2024-08-12 6:01:32.377 Missing lputil localUsernameHash in UserPreferences for key: lp_autofill_enabled
+2024-08-12 6:01:32.431 --- Binary name: LastPass
+2024-08-12 6:01:32.433 LastPass version: 6.13.0.6650
+2024-08-12 6:01:32.433 Device type: iPhone
+2024-08-12 6:01:32.434 OS version: 17.6.1
+2024-08-12 6:01:32.434 Locale: en
+2024-08-12 6:01:32.435 Network type: WiFi
+2024-08-12 6:01:32.435 Cellular carrier: carrier: CTCarrier (0x301d45860) {
+	Carrier name: [--]
+	Mobile Country Code: [65535]
+	Mobile Network Code:[65535]
+	ISO Country Code:[--]
+	Allows VOIP? [YES]
+}
+
+2024-08-12 6:01:32.437 applicationDidBecomeActive
+2024-08-12 6:01:32.438 Missing lputil localUsernameHash in UserPreferences for key: isPinCodeScreenShown
+2024-08-12 6:01:32.438 Missing lputil localUsernameHash in UserPreferences for key: isPinCodeScreenShown
+2024-08-12 6:01:32.445 ReachabilityManager network status changed: WiFi
+2024-08-12 6:01:32.447 Failed to fetch remote configuration. Status: FIRRemoteConfigFetchAndActivateStatus(rawValue: 2) error: nil
+2024-08-12 6:01:32.453 swizzled_pushViewController - Log message: ViewController pushed: LastPass.IntroPageViewController with title: (null)
+2024-08-12 6:01:32.655 Log out user, reason: errorifnotloggedin
+2024-08-12 6:01:32.656 LastPassModel logout
+2024-08-12 6:01:32.656 lp_logout
+2024-08-12 6:01:32.664 Logout API request not sent: sessionID and/or csrfToken is nil
+2024-08-12 6:01:32.664 lputil lp_cleanup
+2024-08-12 6:01:32.671 wipeState begin
+2024-08-12 6:01:32.672 wipeState removeItemAtPath end: /private/var/mobile/Containers/Shared/AppGroup/3C3D10B9-3389-4C87-8403-6E7B137591E2/LastPass/restore_state
+2024-08-12 6:01:32.672 wipeState end
+2024-08-12 6:01:32.676 Missing lputil localUsernameHash in UserPreferences for key: should_display_premium_retrial_offer
+2024-08-12 6:01:32.676 Missing lputil localUsernameHash in UserPreferences for key: lp_formfill_migration_was_tried
+2024-08-12 6:01:32.677 Missing lputil localUsernameHash in UserPreferences for key: feature_ia_vault
+2024-08-12 6:01:32.677 Missing lputil localUsernameHash in UserPreferences for key: trialexpiredshown
+2024-08-12 6:01:32.677 Missing lputil localUsernameHash in UserPreferences for key: WatchAcctReady
+2024-08-12 6:01:32.678 Missing lputil localUsernameHash in UserPreferences for key: should_display_premium_retrial_offer
+2024-08-12 6:01:32.678 Missing lputil localUsernameHash in UserPreferences for key: lp_formfill_migration_was_tried
+2024-08-12 6:01:32.679 Missing lputil localUsernameHash in UserPreferences for key: feature_ia_vault
+2024-08-12 6:01:32.679 Missing lputil localUsernameHash in UserPreferences for key: trialexpiredshown
+2024-08-12 6:01:32.679 Missing lputil localUsernameHash in UserPreferences for key: WatchAcctReady
+2024-08-12 6:01:32.809 Remote configuration did fetch. Status: FIRRemoteConfigFetchAndActivateStatus(rawValue: 0)
+2024-08-12 6:01:32.809 Experiment 'ios_autofill_enablement_test' set up with variant: control
+2024-08-12 6:01:33.135 [Appsflyer] onConversionDataRequestFailure: Error Domain=NSCocoaErrorDomain Code=3840 "Unable to parse empty data." UserInfo={NSDebugDescription=Unable to parse empty data.}]
+2024-08-12 6:01:40.618 applicationWillResignActive
+2024-08-12 6:01:48.953 applicationDidEnterBackground
+2024-08-12 6:03:52.112 applicationWillEnterForeground
+2024-08-12 6:03:52.115 Missing lputil localUsernameHash in UserPreferences for key: time_of_login_with_short_password
+2024-08-12 6:03:52.116 Missing lputil localUsernameHash in UserPreferences for key: lp_autofill_enabled
+2024-08-12 6:03:52.119 swizzled_pushViewController - Log message: ViewController pushed: LastPass.GoPremiumViewController with title: (null)
+2024-08-12 6:03:52.125 swizzled_pushViewController - Log message: ViewController pushed: LastPass.SecurityViewController with title: (null)
+2024-08-12 6:03:52.132 Missing lputil localUsernameHash in UserPreferences for key: lp_autofill_enabled
+2024-08-12 6:03:52.451 applicationDidBecomeActive
+2024-08-12 6:03:52.453 Missing lputil localUsernameHash in UserPreferences for key: isPinCodeScreenShown
+2024-08-12 6:03:52.455 Missing lputil localUsernameHash in UserPreferences for key: isPinCodeScreenShown
+2024-08-12 6:03:52.477 Remote configuration did fetch. Status: FIRRemoteConfigFetchAndActivateStatus(rawValue: 0)
+2024-08-12 6:03:52.478 Experiment 'ios_autofill_enablement_test' set up with variant: control
+2024-08-12 6:03:53.253 [Appsflyer] onConversionDataRequestFailure: Error Domain=NSCocoaErrorDomain Code=3840 "Unable to parse empty data." UserInfo={NSDebugDescription=Unable to parse empty data.}]
+2024-08-12 6:03:56.479 swizzled_pushViewController - Log message: ViewController pushed: LastPass.TroubleLoginViewController with title: (null)
+2024-08-12 6:04:12.792 swizzled_pushViewController - Log message: ViewController pushed: LastPass.ForgotPasswordViewController with title: (null)
+2024-08-12 6:04:21.784 Getting OTP hash
+2024-08-12 6:04:26.146 swizzled_pushViewController - Log message: ViewController pushed: LastPass.SendAHintViewController with title: (null)
+2024-08-12 6:04:43.855 applicationWillResignActive
+2024-08-12 6:04:48.680 applicationDidBecomeActive
+2024-08-12 6:04:48.682 Missing lputil localUsernameHash in UserPreferences for key: isPinCodeScreenShown
+2024-08-12 6:04:48.684 Missing lputil localUsernameHash in UserPreferences for key: isPinCodeScreenShown
+2024-08-12 6:04:48.696 Remote configuration did fetch. Status: FIRRemoteConfigFetchAndActivateStatus(rawValue: 0)
+2024-08-12 6:04:48.697 Experiment 'ios_autofill_enablement_test' set up with variant: control
+2024-08-12 6:04:49.674 [Appsflyer] onConversionDataRequestFailure: Error Domain=NSCocoaErrorDomain Code=3840 "Unable to parse empty data." UserInfo={NSDebugDescription=Unable to parse empty data.}]
+2024-08-12 6:04:54.263 applicationWillResignActive
+2024-08-12 6:05:00.683 applicationDidEnterBackground
+2024-08-12 6:05:02.240 applicationWillEnterForeground
+2024-08-12 6:05:02.241 Missing lputil localUsernameHash in UserPreferences for key: time_of_login_with_short_password
+2024-08-12 6:05:02.242 Missing lputil localUsernameHash in UserPreferences for key: lp_autofill_enabled
+2024-08-12 6:05:02.246 swizzled_pushViewController - Log message: ViewController pushed: LastPass.GoPremiumViewController with title: (null)
+2024-08-12 6:05:02.253 swizzled_pushViewController - Log message: ViewController pushed: LastPass.SecurityViewController with title: (null)
+2024-08-12 6:05:02.259 MainViewController logout
+2024-08-12 6:05:02.260 LastPassModel logout
+2024-08-12 6:05:02.260 lp_logout
+2024-08-12 6:05:02.266 Missing lputil localUsernameHash in UserPreferences for key: lp_autofill_enabled
+2024-08-12 6:05:02.267 Logout API request not sent: sessionID and/or csrfToken is empty
+2024-08-12 6:05:02.268 lputil lp_cleanup
+2024-08-12 6:05:02.279 wipeState begin
+2024-08-12 6:05:02.279 wipeState removeItemAtPath end: /private/var/mobile/Containers/Shared/AppGroup/3C3D10B9-3389-4C87-8403-6E7B137591E2/LastPass/restore_state
+2024-08-12 6:05:02.280 wipeState end
+2024-08-12 6:05:02.287 Missing lputil localUsernameHash in UserPreferences for key: should_display_premium_retrial_offer
+2024-08-12 6:05:02.287 Missing lputil localUsernameHash in UserPreferences for key: lp_formfill_migration_was_tried
+2024-08-12 6:05:02.287 Missing lputil localUsernameHash in UserPreferences for key: feature_ia_vault
+2024-08-12 6:05:02.288 Missing lputil localUsernameHash in UserPreferences for key: trialexpiredshown
+2024-08-12 6:05:02.288 Missing lputil localUsernameHash in UserPreferences for key: WatchAcctReady
+2024-08-12 6:05:02.597 applicationDidBecomeActive
+2024-08-12 6:05:02.599 Missing lputil localUsernameHash in UserPreferences for key: isPinCodeScreenShown
+2024-08-12 6:05:02.600 Missing lputil localUsernameHash in UserPreferences for key: isPinCodeScreenShown
+2024-08-12 6:05:02.615 Remote configuration did fetch. Status: FIRRemoteConfigFetchAndActivateStatus(rawValue: 0)
+2024-08-12 6:05:02.616 Experiment 'ios_autofill_enablement_test' set up with variant: control
+2024-08-12 6:05:03.494 [Appsflyer] onConversionDataRequestFailure: Error Domain=NSCocoaErrorDomain Code=3840 "Unable to parse empty data." UserInfo={NSDebugDescription=Unable to parse empty data.}]
+2024-08-12 6:05:04.649 swizzled_pushViewController - Log message: ViewController pushed: LastPass.LoginSettingsViewController with title: (null)
+2024-08-12 6:05:21.884 LastPassModel login
+2024-08-12 6:05:22.009 lputil setUsernameHash, localUsernameHash is nil: NO
+2024-08-12 6:05:22.095 FilePersistenceService - ERROR READING FILE /private/var/mobile/Containers/Shared/AppGroup/3C3D10B9-3389-4C87-8403-6E7B137591E2/LastPass/8be4eefa5833152e9af96f02cd13d3661328550a78fe96ec2461843d1ecb9eb0_lppri.lps Error The file “8be4eefa5833152e9af96f02cd13d3661328550a78fe96ec2461843d1ecb9eb0_lppri.lps” couldn’t be opened because there is no such file.
+2024-08-12 6:05:22.095 lprsa_readrsaprivatekeyhexfromfile: failed to read file.
+2024-08-12 6:05:22.095 FilePersistenceService - File removal failed: “8be4eefa5833152e9af96f02cd13d3661328550a78fe96ec2461843d1ecb9eb0_lppri.lps” couldn’t be removed.
+2024-08-12 6:05:22.449 LPLogin - Login Failed received response: You may have mistyped your email address. Try again.
+2024-08-12 6:05:22.450 Login Failed cause: user_not_exists, attributes: {
+    cause = "user_not_exists";
+    "is_passwordless_login" = "";
+    message = "You may have mistyped your email address. Try again.";
+    "passwordless_device_id" = "";
+}
+2024-08-12 6:05:22.453 onLoginResponse:0 message:You may have mistyped your email address. Try again. cause:user_not_exists
+2024-08-12 6:05:22.454 lp_logout
+2024-08-12 6:05:22.463 Logout API request not sent: sessionID and/or csrfToken is empty
+2024-08-12 6:05:22.464 lputil lp_cleanup
+2024-08-12 6:05:22.489 wipeState begin
+2024-08-12 6:05:22.490 wipeState removeItemAtPath end: /private/var/mobile/Containers/Shared/AppGroup/3C3D10B9-3389-4C87-8403-6E7B137591E2/LastPass/restore_state
+2024-08-12 6:05:22.491 wipeState end
+2024-08-12 6:05:22.493 lputil lp_cleanup
+2024-08-12 6:05:22.502 wipeState begin
+2024-08-12 6:05:22.502 wipeState removeItemAtPath end: /private/var/mobile/Containers/Shared/AppGroup/3C3D10B9-3389-4C87-8403-6E7B137591E2/LastPass/restore_state
+2024-08-12 6:05:22.503 wipeState end
+2024-08-12 6:05:22.504 Missing lputil localUsernameHash in UserPreferences for key: save_state_after_login_response
+2024-08-12 6:05:24.617 swizzled_pushViewController - Log message: ViewController pushed: LastPass.TroubleLoginViewController with title: (null)
+2024-08-12 6:05:26.509 swizzled_pushViewController - Log message: ViewController pushed: LastPass.DiagnosticLogViewController with title: (null)
