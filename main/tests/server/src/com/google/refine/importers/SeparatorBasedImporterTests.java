@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.input.CharSequenceReader;
@@ -389,6 +390,26 @@ public class SeparatorBasedImporterTests extends ImporterTest {
     }
 
     @Test(dataProvider = "CSV-TSV-AutoDetermine")
+    public void readCRLF(String sep) {
+        // create input
+        String inputSeparator = sep == null ? "\t" : sep;
+        String input = "col1" + inputSeparator + "col2" + inputSeparator + "col3\r\n"
+                + "data1" + inputSeparator + "data2" + inputSeparator + "data3\r\n"
+                + "row2data1" + inputSeparator + "row2data2" + inputSeparator + "row2data3\r\n";
+
+        prepareOptions(sep, -1, 0, 0, 1, false, false);
+        parseOneFile(SUT, new StringReader(input));
+
+        Project expectedProject = createProject(
+                new String[] { "col1", "col2", "col3" },
+                new Serializable[][] {
+                        { "data1", "data2", "data3" },
+                        { "row2data1", "row2data2", "row2data3" },
+                });
+        assertProjectEquals(project, expectedProject);
+    }
+
+    @Test(dataProvider = "CSV-TSV-AutoDetermine")
     public void readIgnore3_Header2_Skip1(String sep) {
         // create input
         String inputSeparator = sep == null ? "\t" : sep;
@@ -423,9 +444,8 @@ public class SeparatorBasedImporterTests extends ImporterTest {
                 "skip1\n" +
                 "skip2\n" +
                 "data-row1-cell1" + inputSeparator + "data-row1-cell2" + inputSeparator + "data-row1-cell3\n" +
-                "data-row2-cell1" + inputSeparator + "data-row2-cell2" + inputSeparator + "\n" + // missing last data
-                                                                                                 // point of this row on
-                                                                                                 // purpose
+                // the last data point of the row below is skipped on purpose
+                "data-row2-cell1" + inputSeparator + "data-row2-cell2" + inputSeparator + "\n" +
                 "data-row3-cell1" + inputSeparator + "data-row3-cell2" + inputSeparator + "data-row1-cell3";
 
         prepareOptions(sep, 2, 2, 3, 2, false, false);
@@ -576,6 +596,32 @@ public class SeparatorBasedImporterTests extends ImporterTest {
                         { "da\rta1", "dat\ta2", "data3", "dat\na4" },
                 });
         assertProjectEquals(project, expectedProject);
+    }
+
+    @Test(dataProvider = "CSV-TSV-AutoDetermine")
+    public void testDeleteEmptyColumns(String sep) {
+        // Set up blank column in project
+        String inputSeparator = sep == null ? "\t" : sep;
+        String input = "data1" + inputSeparator + inputSeparator + "data2\"" + inputSeparator + inputSeparator + "data3" + inputSeparator
+                + "\n" +
+                "data4" + inputSeparator + inputSeparator + "data5\"" + inputSeparator + inputSeparator + "data6";
+        ArrayNode columnNames = ParsingUtilities.mapper.createArrayNode();
+        columnNames.add("Col 1");
+        columnNames.add("Col 2");
+        columnNames.add("Col 3");
+        columnNames.add("Col 4");
+        columnNames.add("Col 5");
+
+        // This will mock the situation of deleting empty columns(col2&col4)
+        prepareOptions(sep, -1, 0, 0, 1, false, true);
+        whenGetBooleanOption("storeBlankColumns", options, false);
+        whenGetArrayOption("columnNames", options, columnNames);
+        parseOneFile(SUT, new StringReader(input));
+
+        Assert.assertEquals(project.columnModel.columns.size(), 3);
+        Assert.assertEquals(project.columnModel.columns.get(0).getName(), "Col 1");
+        Assert.assertEquals(project.columnModel.columns.get(1).getName(), "Col 3");
+        Assert.assertEquals(project.columnModel.columns.get(2).getName(), "Col 5");
     }
 
     // ---------------------guess separators------------------------
