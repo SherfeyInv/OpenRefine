@@ -51,6 +51,10 @@ class ListFacet extends Facet {
     this._data = null;
 
     this._initialHeightSet = false;
+  };
+
+  prepareUI() {
+    Refine.showLeftPanel();
     this._initializeUI();
     this._update();
   };
@@ -100,6 +104,14 @@ class ListFacet extends Facet {
     (this._blankChoice !== null && this._blankChoice.s) || 
     (this._errorChoice !== null && this._errorChoice.s);
   };
+
+  uniquenessCriterion() {
+    return JSON.stringify([
+      "list",
+      this._config.columnName,
+      this._config.expression
+    ]);
+  }
 
   updateState(data, column) {
     this._data = data;
@@ -571,8 +583,6 @@ class ListFacet extends Facet {
     var commit = function() {
       var text = elmts.textarea[0].value;
 
-      MenuSystem.dismissAll();
-
       var edit = { to : text };
       if (choice === self._blankChoice) {
         edit.fromBlank = true;
@@ -597,6 +607,7 @@ class ListFacet extends Facet {
         },
         {
           onDone: function(o) {
+            MenuSystem.dismissAll();
             var selection = [];
             var gotSelection = false;
             for (var i = 0; i < self._selection.length; i++) {
