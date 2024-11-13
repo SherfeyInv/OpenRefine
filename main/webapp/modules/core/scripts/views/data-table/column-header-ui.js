@@ -31,11 +31,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  */
 
-function DataTableColumnHeaderUI(dataTableView, column, columnIndex, td) {
+function DataTableColumnHeaderUI(dataTableView, column, columnIndex, td, col) {
   this._dataTableView = dataTableView;
   this._column = column;
   this._columnIndex = columnIndex;
   this._td = td;
+  this._col = col;
 
   this._render();
 }
@@ -69,7 +70,33 @@ DataTableColumnHeaderUI.prototype._render = function() {
   elmts.dropdownMenu.on('click',function() {
     self._createMenuForColumnHeader(this);
   });
-  
+
+  var serviceUrl = null;
+  var service = null;
+  var serviceLogo = null;
+  if (this._column.reconConfig) {
+   serviceUrl = this._column.reconConfig.service;
+  }
+  try {
+    if (new URL(serviceUrl)) {
+      service = ReconciliationManager.getServiceFromUrl(serviceUrl);
+    }
+    if (service) {
+      serviceLogo=service.logo;
+   }
+
+    var img = $("<img>");
+    if (serviceLogo) {
+      var imageUrl = serviceLogo;
+      img.attr("src", imageUrl);
+      img.attr("title", service.name);
+      img.addClass("serviceLogo")
+      img.appendTo(elmts.serviceLogoContainer.show());
+    }
+  } catch {
+    console.log("Invalid logo URL supplied by service "+serviceUrl);
+  }
+
   if ("reconStats" in this._column) {
     var stats = this._column.reconStats;
     if (stats.nonBlanks > 0) {
