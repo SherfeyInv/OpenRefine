@@ -27,12 +27,15 @@
 
 package com.google.refine.operations.cell;
 
+import static org.testng.Assert.assertThrows;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.node.TextNode;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -48,6 +51,7 @@ import com.google.refine.expr.EvalError;
 import com.google.refine.expr.MetaParser;
 import com.google.refine.grel.Parser;
 import com.google.refine.model.Project;
+import com.google.refine.operations.OperationDescription;
 import com.google.refine.operations.OperationRegistry;
 import com.google.refine.operations.cell.MassEditOperation.Edit;
 import com.google.refine.util.ParsingUtilities;
@@ -76,7 +80,7 @@ public class MassOperationTests extends RefineTest {
     @Test
     public void serializeMassEditOperation() throws Exception {
         String json = "{\"op\":\"core/mass-edit\","
-                + "\"description\":\"Mass edit cells in column my column\","
+                + "\"description\":" + new TextNode(OperationDescription.cell_mass_edit_brief("my column")).toString() + ","
                 + "\"engineConfig\":{\"mode\":\"record-based\",\"facets\":[]},"
                 + "\"columnName\":\"my column\",\"expression\":\"value\","
                 + "\"edits\":[{\"fromBlank\":false,\"fromError\":false,\"from\":[\"String\"],\"to\":\"newString\"}]}";
@@ -166,6 +170,18 @@ public class MassOperationTests extends RefineTest {
         Assert.assertTrue(editList.get(0).fromBlank);
         Assert.assertFalse(editList.get(0).fromError);
 
+    }
+
+    @Test
+    public void testValidate() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new MassEditOperation(invalidEngineConfig, "foo", "grel:value", editsWithFromBlank).validate());
+        assertThrows(IllegalArgumentException.class,
+                () -> new MassEditOperation(defaultEngineConfig, null, "grel:value", editsWithFromBlank).validate());
+        assertThrows(IllegalArgumentException.class,
+                () -> new MassEditOperation(defaultEngineConfig, "foo", "grel:invalid(", editsWithFromBlank).validate());
+        assertThrows(IllegalArgumentException.class,
+                () -> new MassEditOperation(defaultEngineConfig, "foo", "grel:value", null).validate());
     }
 
     // Not yet testing for mass edit from OR Error

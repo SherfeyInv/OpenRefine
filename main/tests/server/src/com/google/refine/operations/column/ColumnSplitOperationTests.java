@@ -27,9 +27,15 @@
 
 package com.google.refine.operations.column;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertThrows;
+
 import java.io.Serializable;
 import java.util.Collections;
+import java.util.Optional;
+import java.util.Set;
 
+import com.fasterxml.jackson.databind.node.TextNode;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
@@ -40,6 +46,7 @@ import com.google.refine.browsing.EngineConfig;
 import com.google.refine.expr.EvalError;
 import com.google.refine.model.AbstractOperation;
 import com.google.refine.model.Project;
+import com.google.refine.operations.OperationDescription;
 import com.google.refine.operations.OperationRegistry;
 import com.google.refine.util.ParsingUtilities;
 import com.google.refine.util.TestUtils;
@@ -69,9 +76,10 @@ public class ColumnSplitOperationTests extends RefineTest {
 
     @Test
     public void serializeColumnSplitOperationBySeparator() throws Exception {
+        String description = OperationDescription.column_split_separator_brief("ea");
         String json = "{\n" +
                 "    \"op\": \"core/column-split\",\n" +
-                "    \"description\": \"Split column ea by separator\",\n" +
+                "    \"description\": " + new TextNode(description).toString() + ",\n" +
                 "    \"engineConfig\": {\n" +
                 "      \"mode\": \"row-based\",\n" +
                 "      \"facets\": []\n" +
@@ -89,9 +97,10 @@ public class ColumnSplitOperationTests extends RefineTest {
 
     @Test
     public void serializeColumnSplitOperationByLengths() throws Exception {
+        String description = OperationDescription.column_split_brief("ea");
         String json = "{\n" +
                 "    \"op\": \"core/column-split\",\n" +
-                "    \"description\": \"Split column ea by field lengths\",\n" +
+                "    \"description\": " + new TextNode(description).toString() + ",\n" +
                 "    \"engineConfig\": {\n" +
                 "      \"mode\": \"row-based\",\n" +
                 "      \"facets\": []\n" +
@@ -106,9 +115,24 @@ public class ColumnSplitOperationTests extends RefineTest {
     }
 
     @Test
+    public void testValidate() {
+        AbstractOperation op = new ColumnSplitOperation(invalidEngineConfig, "foo", false, false, ",",
+                false, 0);
+        assertThrows(IllegalArgumentException.class, () -> op.validate());
+        AbstractOperation noColumnName = new ColumnSplitOperation(EngineConfig.reconstruct("{}"), null, false, false, ",",
+                false, 0);
+        assertThrows(IllegalArgumentException.class, () -> noColumnName.validate());
+        AbstractOperation lengths = new ColumnSplitOperation(new EngineConfig(Collections.emptyList(), Mode.RowBased), "hello", false,
+                false, null);
+        assertThrows(IllegalArgumentException.class, () -> lengths.validate());
+    }
+
+    @Test
     public void testSeparator() throws Exception {
         AbstractOperation SUT = new ColumnSplitOperation(new EngineConfig(Collections.emptyList(), Mode.RowBased), "foo", false, false, ",",
                 false, 0);
+        assertEquals(SUT.getColumnDependencies().get(), Set.of("foo"));
+        assertEquals(SUT.getColumnsDiff(), Optional.empty());
 
         runOperation(SUT, project);
 
@@ -129,6 +153,8 @@ public class ColumnSplitOperationTests extends RefineTest {
     public void testSeparatorMaxColumns() throws Exception {
         AbstractOperation SUT = new ColumnSplitOperation(new EngineConfig(Collections.emptyList(), Mode.RowBased), "foo", false, false, ",",
                 false, 2);
+        assertEquals(SUT.getColumnDependencies().get(), Set.of("foo"));
+        assertEquals(SUT.getColumnsDiff(), Optional.empty());
 
         runOperation(SUT, project);
 
@@ -149,6 +175,9 @@ public class ColumnSplitOperationTests extends RefineTest {
     public void testSeparatorDetectType() throws Exception {
         AbstractOperation SUT = new ColumnSplitOperation(new EngineConfig(Collections.emptyList(), Mode.RowBased), "foo", true, false, ",",
                 false, 2);
+        assertEquals(SUT.getColumnDependencies().get(), Set.of("foo"));
+        assertEquals(SUT.getColumnsDiff(), Optional.empty());
+
         runOperation(SUT, project);
 
         Project expected = createProject(
@@ -168,6 +197,8 @@ public class ColumnSplitOperationTests extends RefineTest {
     public void testSeparatorRemoveColumn() throws Exception {
         AbstractOperation SUT = new ColumnSplitOperation(new EngineConfig(Collections.emptyList(), Mode.RowBased), "foo", true, true, ",",
                 false, 2);
+        assertEquals(SUT.getColumnDependencies().get(), Set.of("foo"));
+        assertEquals(SUT.getColumnsDiff(), Optional.empty());
 
         runOperation(SUT, project);
 
@@ -188,6 +219,8 @@ public class ColumnSplitOperationTests extends RefineTest {
     public void testRegex() throws Exception {
         AbstractOperation SUT = new ColumnSplitOperation(new EngineConfig(Collections.emptyList(), Mode.RowBased), "bar", false, false,
                 "[A-Z]", true, 0);
+        assertEquals(SUT.getColumnDependencies().get(), Set.of("bar"));
+        assertEquals(SUT.getColumnsDiff(), Optional.empty());
 
         runOperation(SUT, project);
 
@@ -208,6 +241,8 @@ public class ColumnSplitOperationTests extends RefineTest {
     public void testLengths() throws Exception {
         AbstractOperation operation = new ColumnSplitOperation(new EngineConfig(Collections.emptyList(), Mode.RowBased), "hello", false,
                 false, new int[] { 1, 2 });
+        assertEquals(operation.getColumnDependencies().get(), Set.of("hello"));
+        assertEquals(operation.getColumnsDiff(), Optional.empty());
 
         runOperation(operation, project);
 
