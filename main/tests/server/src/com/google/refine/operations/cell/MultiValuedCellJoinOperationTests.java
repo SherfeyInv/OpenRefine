@@ -33,8 +33,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.google.refine.operations.cell;
 
+import static org.testng.Assert.assertThrows;
+
 import java.io.Serializable;
 
+import com.fasterxml.jackson.databind.node.TextNode;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
@@ -44,6 +47,7 @@ import org.testng.annotations.Test;
 import com.google.refine.RefineTest;
 import com.google.refine.model.AbstractOperation;
 import com.google.refine.model.Project;
+import com.google.refine.operations.OperationDescription;
 import com.google.refine.operations.OperationRegistry;
 import com.google.refine.util.ParsingUtilities;
 import com.google.refine.util.TestUtils;
@@ -88,11 +92,18 @@ public class MultiValuedCellJoinOperationTests extends RefineTest {
     @Test
     public void serializeMultiValuedCellJoinOperation() throws Exception {
         String json = "{\"op\":\"core/multivalued-cell-join\","
-                + "\"description\":\"Join multi-valued cells in column value column\","
+                + "\"description\":" + new TextNode(OperationDescription.cell_multivalued_cell_join_brief("value column")).toString() + ","
                 + "\"columnName\":\"value column\","
                 + "\"keyColumnName\":\"key column\","
                 + "\"separator\":\",\"}";
         TestUtils.isSerializedTo(ParsingUtilities.mapper.readValue(json, MultiValuedCellJoinOperation.class), json);
+    }
+
+    @Test
+    public void testValidate() {
+        assertThrows(IllegalArgumentException.class, () -> new MultiValuedCellJoinOperation(null, "key", "sep").validate());
+        assertThrows(IllegalArgumentException.class, () -> new MultiValuedCellJoinOperation("value", null, "sep").validate());
+        assertThrows(IllegalArgumentException.class, () -> new MultiValuedCellJoinOperation("value", "key", null).validate());
     }
 
     /*

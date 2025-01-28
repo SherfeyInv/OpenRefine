@@ -57,7 +57,7 @@ The Release Manager is responsible to
 * Coordinate with the community to select which issues and pull requests are part of new releases
 * Prepare and coordinate publishing new releases
 
-The current Release Manager is [Tom Morris](https://github.com/tfmorris).
+The current Release Manager is [Antonin Delpeuch](https://github.com/wetneb).
 
 ### Steering Committee
 The steering committee oversees the general direction of the project and initiates connections and collaborations with other organizations and projects.
@@ -94,7 +94,6 @@ In the event of any conflict of interest (a Committee Member, their family membe
 
 #### Current list of Advisory Committee members
 * Jan Ainali
-* Antonin Delpeuch
 * Julie Faure-Lacroix
 * Esther Jackson
 

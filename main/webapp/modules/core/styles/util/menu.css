@@ -67,15 +67,26 @@ a.menu-item {
 }
 
 a.menu-item:hover {
-  background: #dbe8f8;
+  background-color: #dbe8f8;
+}
+
+.menu-item.submenu div {
+  background: url('../../images/right-arrow.png') no-repeat;
+  background-position-x: right;
+  background-position-y: 50%;
+  padding-right: 8px;
 }
 
 a.menu-item img {
   border: none;
 }
 
-table.menu-item-layout td {
+a.menu-item .menu-icon {
+  display: inline;
+  height: 1.6em;
   vertical-align: middle;
+  margin-left: -2px;
+  margin-top: -1px;
 }
 
 .menu-section {

@@ -1035,7 +1035,22 @@ DataTableView.prototype._createMenuForAllColumns = function(elmt) {
           click: function() {
             Refine.postCoreProcess("remove-rows", {}, null, { rowMetadataChanged: true });
           }
-        }
+        },
+        {
+          label: $.i18n('core-views/keep-only-matching'),
+          id: "core/keep-only-matching",
+          click: function() {
+            Refine.postCoreProcess("keep-matching-rows", {}, null, { rowMetadataChanged: true });
+          }
+        },
+        {},
+        {
+          label: $.i18n('core-views/remove-duplicates'),
+          id: "core/remove-duplicates",
+          click: function() {
+            new RemoveDuplicateRowsDialog();
+          }
+        },
       ]
     },
     {
