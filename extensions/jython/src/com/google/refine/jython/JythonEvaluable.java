@@ -50,6 +50,7 @@ import org.python.core.PyLong;
 import org.python.core.PyNone;
 import org.python.core.PyObject;
 import org.python.core.PyString;
+import org.python.core.PySyntaxError;
 import org.python.util.PythonInterpreter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +70,11 @@ public class JythonEvaluable implements Evaluable {
 
             @Override
             public Evaluable parse(String source, String languagePrefix) throws ParsingException {
-                return new JythonEvaluable(source, languagePrefix);
+                try {
+                    return new JythonEvaluable(source, languagePrefix);
+                } catch (PySyntaxError e) {
+                    throw new ParsingException("Syntax error");
+                }
             }
 
         };
@@ -128,7 +133,7 @@ public class JythonEvaluable implements Evaluable {
         StringBuffer sb = new StringBuffer(1024);
         sb.append("def ");
         sb.append(s_functionName);
-        sb.append("(value, cell, cells, row, rowIndex):");
+        sb.append("(value, cell, cells, row, rowIndex, value1, value2):");
         for (String line : lines) {
             sb.append("\n  ");
             sb.append(line);
@@ -140,29 +145,41 @@ public class JythonEvaluable implements Evaluable {
     @Override
     public Object evaluate(Properties bindings) {
         try {
-            Object value = bindings.get("value");
-            PyObject pyValue;
-            if (value instanceof OffsetDateTime) {
-                // We know the OffsetDateTime is always at UTC, but just in case it ever changes, do the UTC change
-                pyValue = Py.newDatetime(Timestamp.valueOf(((OffsetDateTime) value).atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime()));
-            } else {
-                pyValue = Py.java2py(value);
-            }
             // call the temporary PyFunction directly
             Object result = ((PyFunction) _engine.get(s_functionName)).__call__(
 
                     new PyObject[] {
-                            pyValue,
-                            new JythonHasFieldsWrapper((HasFields) bindings.get("cell"), bindings),
-                            new JythonHasFieldsWrapper((HasFields) bindings.get("cells"), bindings),
-                            new JythonHasFieldsWrapper((HasFields) bindings.get("row"), bindings),
-                            Py.java2py(bindings.get("rowIndex"))
+                            getValue("value", bindings),
+                            getObject("cell", bindings),
+                            getObject("cells", bindings),
+                            getObject("row", bindings),
+                            getValue("rowIndex", bindings),
+                            getValue("value1", bindings),
+                            getValue("value2", bindings)
                     });
 
             return unwrap(result);
         } catch (PyException e) {
             return new EvalError(e.getMessage());
         }
+    }
+
+    private JythonHasFieldsWrapper getObject(String key, Properties bindings) {
+        return new JythonHasFieldsWrapper((HasFields) bindings.get(key), bindings);
+    }
+
+    private PyObject getValue(String key, Properties bindings) {
+        Object value = bindings.get(key);
+        PyObject pyValue;
+        if (value instanceof OffsetDateTime) {
+            // We know the OffsetDateTime is always at UTC, but just in case it ever
+            // changes, do the UTC change
+            pyValue = Py.newDatetime(
+                    Timestamp.valueOf(((OffsetDateTime) value).atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime()));
+        } else {
+            pyValue = Py.java2py(value);
+        }
+        return pyValue;
     }
 
     protected Object unwrap(Object result) {

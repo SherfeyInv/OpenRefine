@@ -105,6 +105,9 @@ DataTableView.prototype._startResizing = function(columnIndex, clickEvent) {
   // for conversion from px to em
   state.emFactor = parseFloat(getComputedStyle($(".data-table-container colgroup")[0]).fontSize);
 
+  state.col.width(state.originalWidth);
+  columnHeader._td.classList.add('resized-column');
+
   $('body')
       .on('mousemove', DataTableView.mouseMoveListener)
       .on('mouseup', DataTableView.mouseReleaseListener);
@@ -231,6 +234,9 @@ DataTableView.prototype.render = function() {
   this._renderDataTables(elmts.table[0], elmts.tableHeader[0], elmts.colGroup);
   this._div.empty().append(html);
 
+  // Enable drag-and-drop reordering now that headers are in DOM
+  this._enableHeaderDrag();
+
   // show/hide null values in cells
   $(".data-table-null").toggle(self._shownulls);
 
@@ -245,7 +251,7 @@ DataTableView.prototype._renderSortingControls = function(sortingControls) {
   $('<a href="javascript:{}"></a>')
   .addClass("action")
   .text($.i18n('core-views/sort/single') + " ")
-  .append($('<img>').attr("src", "images/down-arrow.png"))
+  .append($('<img>').attr("src", "images/down-arrow.svg"))
   .appendTo(sortingControls)
   .on('click',function() {
     self._createSortingMenu(this);
@@ -259,7 +265,7 @@ DataTableView.prototype._renderPagingControls = function(pageSizeControls, pagin
   if (theProject.rowModel.start !== undefined) {
      rowIds.push(theProject.rowModel.start);
   } else {
-     rowIds.push(theProject.rowModel.end);
+     rowIds.push(theProject.rowModel.end - 1);
   }
   var minRowId = Math.min(... rowIds);
   var maxRowId = Math.max(... rowIds);
@@ -370,7 +376,7 @@ DataTableView.prototype._renderDataTables = function(table, tableHeader, colGrou
             // See https://github.com/OpenRefine/OpenRefine/blob/master/main/src/com/google/refine/model/ColumnGroup.java
             // and https://github.com/OpenRefine/OpenRefine/tree/master/main/src/com/google/refine/importers/tree
             if (c == keys[k]) {
-              $('<img />').attr("src", "images/down-arrow.png").appendTo(th);
+              $('<img />').attr("src", "images/down-arrow.svg").appendTo(th);
               break;
             }
           }
@@ -565,7 +571,8 @@ DataTableView.prototype._renderTableHeader = function(tableHeader, colGroup) {
   this._columnHeaderUIs = [];
   var createColumnHeader = function(column, index) {
     var th = trHead.appendChild(document.createElement("th"));
-    $(th).addClass("column-header").attr('title', column.name);
+    $(th).addClass("column-header").attr('title', column.name).attr('data-col-name', column.name); // enable sortable to read names
+
     var col = $('<col>')
         .attr('span', 1)
         .data('name', column.name)
@@ -602,6 +609,34 @@ DataTableView.prototype._renderTableHeader = function(tableHeader, colGroup) {
     createColumnHeader(columns[i], i);
   }
 }
+
+// --- enable drag-and-drop using jQuery UI Sortable ---
+DataTableView.prototype._enableHeaderDrag = function() {
+  var $headerRow = this._div.find("thead tr");
+  if ($headerRow.data("ui-sortable")) return; // already enabled
+
+  $headerRow.sortable({
+    axis: "x",
+    containment: "parent",
+    items: "> th:not(:first-child)", // skip the "All" column
+    cancel: ".column-header-menu, .column-header-resizer-left, .column-header-resizer-right",
+    helper: "clone",
+    start: function(_, ui) {
+      ui.placeholder.width(ui.helper.width());
+    },
+    update: function() {
+      var newOrder = $headerRow.children("th:not(:first-child)")
+                       .map(function() { return $(this).data("col-name"); })
+                       .get();
+      Refine.postCoreProcess(
+        "reorder-columns",
+        null,
+        { columnNames: JSON.stringify(newOrder) },
+        { modelsChanged: true }
+      );
+    }
+  }).disableSelection();
+};
 
 DataTableView.prototype._addResizingControls = function(th, index) {
   var self = this;
@@ -1002,6 +1037,7 @@ DataTableView.prototype._createMenuForAllColumns = function(elmt) {
         {
           label: $.i18n('core-views/star-rows'),
           id: "core/star-rows",
+          icon: "images/operations/row-star.svg",
           click: function() {
             Refine.postCoreProcess("annotate-rows", { "starred" : "true" }, null, { rowMetadataChanged: true, rowIdsPreserved: true, recordIdsPreserved: true });
           }
@@ -1009,6 +1045,7 @@ DataTableView.prototype._createMenuForAllColumns = function(elmt) {
         {
           label: $.i18n('core-views/unstar-rows'),
           id: "core/unstar-rows",
+          icon: "images/operations/row-unstar.svg",
           click: function() {
             Refine.postCoreProcess("annotate-rows", { "starred" : "false" }, null, { rowMetadataChanged: true, rowIdsPreserved: true, recordIdsPreserved: true });
           }
@@ -1017,6 +1054,7 @@ DataTableView.prototype._createMenuForAllColumns = function(elmt) {
         {
           label: $.i18n('core-views/flag-rows'),
           id: "core/flag-rows",
+          icon: "images/operations/row-flag.svg",
           click: function() {
             Refine.postCoreProcess("annotate-rows", { "flagged" : "true" }, null, { rowMetadataChanged: true, rowIdsPreserved: true, recordIdsPreserved: true });
           }
@@ -1024,6 +1062,7 @@ DataTableView.prototype._createMenuForAllColumns = function(elmt) {
         {
           label: $.i18n('core-views/unflag-rows'),
           id: "core/unflag-rows",
+          icon: "images/operations/row-unflag.svg",
           click: function() {
             Refine.postCoreProcess("annotate-rows", { "flagged" : "false" }, null, { rowMetadataChanged: true, rowIdsPreserved: true, recordIdsPreserved: true });
           }
@@ -1032,6 +1071,7 @@ DataTableView.prototype._createMenuForAllColumns = function(elmt) {
         {
           label: $.i18n('core-views/remove-matching'),
           id: "core/remove-rows",
+          icon: "images/operations/delete.svg",
           click: function() {
             Refine.postCoreProcess("remove-rows", {}, null, { rowMetadataChanged: true });
           }
@@ -1039,6 +1079,7 @@ DataTableView.prototype._createMenuForAllColumns = function(elmt) {
         {
           label: $.i18n('core-views/keep-only-matching'),
           id: "core/keep-only-matching",
+          icon: "images/operations/row-keep-matched.svg",
           click: function() {
             Refine.postCoreProcess("keep-matching-rows", {}, null, { rowMetadataChanged: true });
           }
@@ -1047,6 +1088,7 @@ DataTableView.prototype._createMenuForAllColumns = function(elmt) {
         {
           label: $.i18n('core-views/remove-duplicates'),
           id: "core/remove-duplicates",
+          icon: "images/operations/row-duplicate-removal.svg",
           click: function() {
             new RemoveDuplicateRowsDialog();
           }
@@ -1061,6 +1103,7 @@ DataTableView.prototype._createMenuForAllColumns = function(elmt) {
         {
           label: $.i18n('core-views/reorder-remove'),
           id: "core/reorder-columns",
+          icon: "images/operations/column-reorder.svg",
           click: function() {
             new ColumnReorderingDialog();
           }
@@ -1069,6 +1112,7 @@ DataTableView.prototype._createMenuForAllColumns = function(elmt) {
         {
           label: $.i18n('core-views/fill-down'),
           id: "core/fill-down",
+          icon: "images/operations/fill-down.svg",
           click: function () {
             if (self._getSortingCriteriaCount() > 0) {
                 self._createPendingSortWarningDialog(doAllFillDown);
@@ -1081,6 +1125,7 @@ DataTableView.prototype._createMenuForAllColumns = function(elmt) {
         {
           label: $.i18n('core-views/blank-down'),
           id: "core/blank-down",
+          icon: "images/operations/blank-down.svg",
           click: function () {
             if (self._getSortingCriteriaCount() > 0) {
                 self._createPendingSortWarningDialog(doAllBlankDown);
