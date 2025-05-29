@@ -103,6 +103,42 @@ public class ApplyOperationsCommandTests extends CommandTestBase {
     }
 
     @Test
+    public void testConflictingIntermediateColumn() throws Exception {
+        String renamesJSON = "{"
+                + "  \"a\": \"bar\""
+                + "}";
+
+        // recipe that contains a column that only exists during intermediate steps
+        String historyWithTemporaryColumn = "[\n"
+                + "  {\n"
+                + "    \"op\": \"core/column-rename\",\n"
+                + "    \"oldColumnName\": \"a\",\n"
+                + "    \"newColumnName\": \"foo\",\n"
+                + "    \"description\": \"Rename column a to foo\"\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"op\": \"core/column-rename\",\n"
+                + "    \"oldColumnName\": \"foo\",\n"
+                + "    \"newColumnName\": \"a2\",\n"
+                + "    \"description\": \"Rename column foo to a2\"\n"
+                + "  }\n"
+                + "]";
+
+        when(request.getParameter("csrf_token")).thenReturn(Command.csrfFactory.getFreshToken());
+        when(request.getParameter("project")).thenReturn(String.format("%d", project.id));
+        when(request.getParameter("operations")).thenReturn(historyWithTemporaryColumn);
+        when(request.getParameter("renames")).thenReturn(renamesJSON);
+
+        command.doPost(request, response);
+
+        String response = writer.toString();
+        JsonNode node = ParsingUtilities.mapper.readValue(response, JsonNode.class);
+        assertEquals(node.get("code").asText(), "ok");
+        assertEquals(node.get("historyEntries").get(0).get("description").asText(),
+                OperationDescription.column_rename_brief("bar", "foo_2"));
+    }
+
+    @Test
     public void testInvalidProject() throws Exception {
         when(request.getParameter("csrf_token")).thenReturn(Command.csrfFactory.getFreshToken());
         when(request.getParameter("project")).thenReturn(String.format("%d9", project.id));
@@ -147,6 +183,24 @@ public class ApplyOperationsCommandTests extends CommandTestBase {
     }
 
     @Test
+    public void testDuplicateNewColumn() throws Exception {
+        String json = "[{\"op\":\"core/column-rename\","
+                + "\"description\":\"Rename column foo to bar\","
+                + "\"oldColumnName\":\"foo\","
+                + "\"newColumnName\":\"bar\"}]";
+
+        when(request.getParameter("csrf_token")).thenReturn(Command.csrfFactory.getFreshToken());
+        when(request.getParameter("project")).thenReturn(Long.toString(project.id));
+        when(request.getParameter("operations")).thenReturn(json);
+
+        command.doPost(request, response);
+
+        String response = writer.toString();
+        JsonNode node = ParsingUtilities.mapper.readValue(response, JsonNode.class);
+        assertEquals(node.get("code").toString(), "\"error\"");
+    }
+
+    @Test
     public void testInvalidExpression() throws Exception {
         String json = "[{"
                 + "   \"op\":\"core/text-transform\","
@@ -169,6 +223,57 @@ public class ApplyOperationsCommandTests extends CommandTestBase {
         assertEquals(node.get("code").toString(), "\"error\"");
         assertEquals(node.get("operationIndex").asInt(), 0);
         assertTrue(node.get("message").asText().startsWith("Operation #1: Invalid expression"));
+    }
+
+    @Test
+    public void testValidWithoutRenames() throws Exception {
+        when(request.getParameter("csrf_token")).thenReturn(Command.csrfFactory.getFreshToken());
+        when(request.getParameter("project")).thenReturn(Long.toString(project.id));
+        when(request.getParameter("operations")).thenReturn(historyJSON);
+
+        command.doPost(request, response);
+
+        String response = writer.toString();
+        JsonNode node = ParsingUtilities.mapper.readValue(response, JsonNode.class);
+        assertEquals(node.get("code").asText(), "ok");
+
+        Project expectedProject = createProject(new String[] { "foo", "bar" },
+                new Serializable[][] {
+                        { 1, "hallo" },
+                        { null, true }
+                });
+        assertProjectEquals(project, expectedProject);
+    }
+
+    @Test
+    public void testValidWithRenames() throws Exception {
+        String renamesJSON = "{"
+                + "  \"bar\": \"bar_orig\""
+                + "}";
+
+        project = createProject(new String[] { "foo", "bar_orig" },
+                new Serializable[][] {
+                        { 1, "hello" },
+                        { null, true }
+                });
+
+        when(request.getParameter("csrf_token")).thenReturn(Command.csrfFactory.getFreshToken());
+        when(request.getParameter("project")).thenReturn(Long.toString(project.id));
+        when(request.getParameter("operations")).thenReturn(historyJSON);
+        when(request.getParameter("renames")).thenReturn(renamesJSON);
+
+        command.doPost(request, response);
+
+        String response = writer.toString();
+        JsonNode node = ParsingUtilities.mapper.readValue(response, JsonNode.class);
+        assertEquals(node.get("code").asText(), "ok");
+
+        Project expectedProject = createProject(new String[] { "foo", "bar_orig" },
+                new Serializable[][] {
+                        { 1, "hallo" },
+                        { null, true }
+                });
+        assertProjectEquals(project, expectedProject);
     }
 
 }
