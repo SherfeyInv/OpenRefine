@@ -170,8 +170,13 @@ function registerOperations() {
 
   OR.registerOperation(module, "column-addition", Packages.com.google.refine.operations.column.ColumnAdditionOperation);
   OR.registerOperation(module, "column-removal", Packages.com.google.refine.operations.column.ColumnRemovalOperation);
+  OR.registerOperation(module, "column-multi-removal", Packages.com.google.refine.operations.column.ColumnMultiRemovalOperation);
   OR.registerOperation(module, "column-rename", Packages.com.google.refine.operations.column.ColumnRenameOperation);
   OR.registerOperation(module, "column-move", Packages.com.google.refine.operations.column.ColumnMoveOperation);
+  OR.registerOperation(module, "column-move-left", Packages.com.google.refine.operations.column.ColumnMoveLeftOperation);
+  OR.registerOperation(module, "column-move-right", Packages.com.google.refine.operations.column.ColumnMoveRightOperation);
+  OR.registerOperation(module, "column-move-first", Packages.com.google.refine.operations.column.ColumnMoveFirstOperation);
+  OR.registerOperation(module, "column-move-last", Packages.com.google.refine.operations.column.ColumnMoveLastOperation);
   OR.registerOperation(module, "column-split", Packages.com.google.refine.operations.column.ColumnSplitOperation);
   OR.registerOperation(module, "column-addition-by-fetching-urls", Packages.com.google.refine.operations.column.ColumnAdditionByFetchingURLsOperation);
   OR.registerOperation(module, "column-reorder", Packages.com.google.refine.operations.column.ColumnReorderOperation);
@@ -500,6 +505,7 @@ function init() {
 
       "scripts/widgets/histogram-widget.js",
       "scripts/widgets/slider-widget.js",
+      "scripts/widgets/recipe-widget.js",
 
       "scripts/project/browsing-engine.js",
       "scripts/project/history-panel.js",
@@ -509,6 +515,7 @@ function init() {
       "scripts/project/exporters.js",
       "scripts/project/scripting.js",
       "scripts/project/operation-icons.js",
+      "scripts/project/facet-icons.js",
 
       "scripts/facets/facet.js",
       "scripts/facets/list-facet.js",
@@ -539,6 +546,7 @@ function init() {
 
       "scripts/dialogs/extract-operations-dialog.js",
       "scripts/dialogs/apply-operations-dialog.js",
+
       "scripts/dialogs/expression-preview-dialog.js",
       "scripts/dialogs/add-column-by-reconciliation.js",
       "scripts/dialogs/clustering-dialog.js",
@@ -546,6 +554,7 @@ function init() {
       "scripts/dialogs/templating-exporter-dialog.js",
       "scripts/dialogs/column-reordering-dialog.js",
       "scripts/dialogs/common-transform-dialog.js",
+      "scripts/dialogs/column-mapping-dialog.js",
       "scripts/dialogs/custom-tabular-exporter-dialog.js",
       "scripts/dialogs/sql-exporter-dialog.js",
       "scripts/dialogs/expression-column-dialog.js",
@@ -596,6 +605,7 @@ function init() {
       "styles/reconciliation/recon-dialog.css",
       "styles/reconciliation/standard-service-panel.css",
       "styles/reconciliation/add-column-by-reconciliation.css",
+      "styles/dialogs/column-mapping-dialog.css",
       "styles/dialogs/remove-duplicate-rows-dialog.css"
     ]
   );

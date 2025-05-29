@@ -36,14 +36,17 @@ package com.google.refine.commands.history;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import com.google.refine.commands.Command;
 import com.google.refine.history.HistoryEntry;
@@ -85,8 +88,23 @@ public class ApplyOperationsCommand extends Command {
             Project project = getProject(request);
             String jsonString = request.getParameter("operations");
 
+            Map<String, String> renames = Map.of();
+            String renamesJson = request.getParameter("renames");
+            if (renamesJson != null) {
+                renames = ParsingUtilities.mapper.readValue(renamesJson, new TypeReference<Map<String, String>>() {
+                });
+            }
+
             Recipe recipe = ParsingUtilities.mapper.readValue(jsonString, Recipe.class);
             recipe.validate();
+            if (!renames.isEmpty()) {
+                recipe = recipe.renameColumns(renames);
+            }
+
+            // deduplicate internal column names to make sure they don't conflict with the ones in the project
+            if (!recipe.getInternalColumns().isEmpty()) {
+                recipe = recipe.avoidInternalColumnCollisions(project.columnModel.getColumnNames().stream().collect(Collectors.toSet()));
+            }
 
             // check all required columns are present
             Set<String> requiredColumns = recipe.getRequiredColumns();
@@ -94,6 +112,15 @@ public class ApplyOperationsCommand extends Command {
                 if (project.columnModel.getColumnByName(columnName) == null) {
                     throw new IllegalArgumentException(
                             "Column '" + columnName + "' is referenced in the list of operations but is absent from the project");
+                }
+            }
+
+            // check all new columns are not present
+            Set<String> newColumns = recipe.getNewColumns();
+            for (String columnName : newColumns) {
+                if (project.columnModel.getColumnByName(columnName) != null) {
+                    throw new IllegalArgumentException(
+                            "Column '" + columnName + "' already exists in the project");
                 }
             }
 
