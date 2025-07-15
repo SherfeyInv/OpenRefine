@@ -86,11 +86,11 @@
     <okhttp.version>4.12.0</okhttp.version>
     <jena.version>4.10.0</jena.version>
     <poi.version>5.4.1</poi.version>
-    <commons-lang3.version>3.17.0</commons-lang3.version>
+    <commons-lang3.version>3.18.0</commons-lang3.version>
     <commons-fileupload.version>1.5</commons-fileupload.version>
     <commons-collections.version>3.2.2</commons-collections.version>
     <commons-text.version>1.13.1</commons-text.version>
-    <commons-validator.version>1.9.0</commons-validator.version>
+    <commons-validator.version>1.10.0</commons-validator.version>
     <org-jvnet-localizer.version>1.31</org-jvnet-localizer.version>
     <!-- v1.15 of commons-codec is needed for Jena 3.14+ - copied from org.apache.jena:jena:pom -->
     <commons-codec.version>1.18.0</commons-codec.version>
