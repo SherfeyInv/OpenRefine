@@ -60,7 +60,6 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.14.0</version>
         <configuration>
-          <compilerVersion>${javac.target}</compilerVersion>
           <source>${javac.target}</source>
           <target>${javac.target}</target>
         </configuration>
@@ -133,7 +132,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.11.2</version>
+          <version>3.11.3</version>
         </plugin>
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>
