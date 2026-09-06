@@ -416,6 +416,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chrome-remote-interface@npm:0.33.3":
+  version: 0.33.3
+  resolution: "chrome-remote-interface@npm:0.33.3"
+  dependencies:
+    commander: "npm:2.11.x"
+    ws: "npm:^7.2.0"
+  bin:
+    chrome-remote-interface: bin/client.js
+  checksum: 10c0/fcc32714a9d20b21a62417341116e79e7838800e8545ce968b360486ccfa88873f631702a5b549c70801ed6358c32213bcd8657d6fab8eceb8c55ac0c43ceaf7
+  languageName: node
+  linkType: hard
+
 "ci-info@npm:^4.1.0":
   version: 4.3.1
   resolution: "ci-info@npm:4.3.1"
@@ -494,6 +506,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"commander@npm:2.11.x":
+  version: 2.11.0
+  resolution: "commander@npm:2.11.0"
+  checksum: 10c0/19eaec3099eba7cc24617fd2bddf6430d62f9e91f0dbfc4abcc5a025f9a6c657526fea5f09243f90c99f87b0df29c29ab4aa4f250888987f658eda617238e55c
+  languageName: node
+  linkType: hard
+
 "commander@npm:^6.2.1":
   version: 6.2.1
   resolution: "commander@npm:6.2.1"
@@ -526,9 +545,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cypress@npm:15.20.1":
-  version: 15.20.1
-  resolution: "cypress@npm:15.20.1"
+"cypress@npm:16.0.0":
+  version: 16.0.0
+  resolution: "cypress@npm:16.0.0"
   dependencies:
     "@cypress/request": "npm:^4.0.0"
     "@cypress/xvfb": "npm:^1.2.4"
@@ -541,11 +560,12 @@ __metadata:
     buffer: "npm:^5.7.1"
     cachedir: "npm:^2.4.0"
     chalk: "npm:^4.1.0"
+    chrome-remote-interface: "npm:0.33.3"
     ci-info: "npm:^4.1.0"
     cli-table3: "npm:0.6.1"
     commander: "npm:^6.2.1"
     common-tags: "npm:^1.8.0"
-    dayjs: "npm:^1.10.4"
+    dayjs: "npm:^1.11.23"
     debug: "npm:^4.3.4"
     eventemitter2: "npm:6.4.7"
     execa: "npm:4.1.0"
@@ -570,7 +590,7 @@ __metadata:
     yauzl: "npm:^3.3.1"
   bin:
     cypress: bin/cypress
-  checksum: 10c0/35ae3824ca0038dcc8d92acf62fe12a1a22ece34c42a7834e6d45989ae822b2278605dec6bb1ebdea495f347db4b5b9daec848f65f180eb830a61da025eb34ed
+  checksum: 10c0/c506208f683f9e003686fa14597a2e5d97c8d9e8a71a7a7ea0fc6979da8375d0d2d401a9b1895535bb0ad7e54619e3f79c6cbf0fbce23715939095b8933e5ba8
   languageName: node
   linkType: hard
 
@@ -583,10 +603,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dayjs@npm:^1.10.4":
-  version: 1.11.18
-  resolution: "dayjs@npm:1.11.18"
-  checksum: 10c0/83b67f5d977e2634edf4f5abdd91d9041a696943143638063016915d2cd8c7e57e0751e40379a07ebca8be7a48dd380bef8752d22a63670f2d15970e34f96d7a
+"dayjs@npm:^1.11.23":
+  version: 1.11.23
+  resolution: "dayjs@npm:1.11.23"
+  checksum: 10c0/69ab04bf19c676e44ab50cc2fca223d265f3dafd107151ef3b0f3ad74d360c37caa602abe62f87cb25d90bd9f6bee003698af47df5b0dbf10a998b7b5f3bb3f1
   languageName: node
   linkType: hard
 
@@ -738,18 +758,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-cypress@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "eslint-plugin-cypress@npm:7.0.0"
+"eslint-plugin-cypress@npm:^7.0.1":
+  version: 7.0.1
+  resolution: "eslint-plugin-cypress@npm:7.0.1"
   dependencies:
-    globals: "npm:^17.9.0"
+    globals: "npm:^17.11.0"
   peerDependencies:
     "@typescript-eslint/parser": ">=8"
     eslint: ">=10"
   peerDependenciesMeta:
     "@typescript-eslint/parser":
       optional: true
-  checksum: 10c0/d71fd197630ac78c2fca47b163e31d5dea403656ddb39020823e4c7c8c09bf8e9c3df8335048eb7a15a5a7ab5a4c501292121fe74c67d5b08fdeafe0b4b45cb1
+  checksum: 10c0/4bef64cbb6f033bf7fafe274b34bca2403968e1cb784b27d998ccee044690b37d8f70aef857d300df3f05a4bb5fcb2aa0ccedf94eb879cccd6ae88a7022d6a7e
   languageName: node
   linkType: hard
 
@@ -779,9 +799,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^10.8.0":
-  version: 10.8.1
-  resolution: "eslint@npm:10.8.1"
+"eslint@npm:^10.9.1":
+  version: 10.9.1
+  resolution: "eslint@npm:10.9.1"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.8.0"
     "@eslint-community/regexpp": "npm:^4.12.2"
@@ -820,7 +840,7 @@ __metadata:
       optional: true
   bin:
     eslint: bin/eslint.js
-  checksum: 10c0/0c4720a43ef2052829db18e37aa79adb5f0a62137bdf4a4f8e9507bbbbf888ba0669fc03e4b7139d8f27b59b051bbbcd0a3988b068c30fa934a766d60a81f599
+  checksum: 10c0/11cfd118dced911d506dc752086a641b45c95996af1f7b2a1914f992bbcdca78bb56cd4dd281595c7a792e1562a49047aa65ce763e3ed809cbde84fe4a08924f
   languageName: node
   linkType: hard
 
@@ -1095,10 +1115,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:^17.9.0":
-  version: 17.11.0
-  resolution: "globals@npm:17.11.0"
-  checksum: 10c0/5e1be3d816e04d4d0d01b1cdd40e46b5fb6b5e9f15aece9a5919b060e0fb1b3f1b9e7327dce97ef19e05513a6d65872e0834999ddea251557556dddd0f5fde30
+"globals@npm:^17.11.0, globals@npm:^17.12.0":
+  version: 17.12.0
+  resolution: "globals@npm:17.12.0"
+  checksum: 10c0/8325cf8818c848871d17c32974c2c74e9c5f09c1b0e04421886f64f21e77c3e95f3ba25586743895a73acd860ada151132481d87d44a1f12993ae7758a694d03
   languageName: node
   linkType: hard
 
@@ -1565,12 +1585,12 @@ __metadata:
   resolution: "openrefine-cypress-test-suite@workspace:."
   dependencies:
     "@eslint/js": "npm:^10.0.0"
-    cypress: "npm:15.20.1"
-    eslint: "npm:^10.8.0"
+    cypress: "npm:16.0.0"
+    eslint: "npm:^10.9.1"
     eslint-config-google: "npm:^0.14.0"
     eslint-config-prettier: "npm:^10.1.8"
-    eslint-plugin-cypress: "npm:^7.0.0"
-    globals: "npm:^17.9.0"
+    eslint-plugin-cypress: "npm:^7.0.1"
+    globals: "npm:^17.12.0"
     prettier: "npm:3.9.6"
   languageName: unknown
   linkType: soft
@@ -2105,6 +2125,21 @@ __metadata:
   version: 1.0.2
   resolution: "wrappy@npm:1.0.2"
   checksum: 10c0/56fece1a4018c6a6c8e28fbc88c87e0fbf4ea8fd64fc6c63b18f4acc4bd13e0ad2515189786dd2c30d3eec9663d70f4ecf699330002f8ccb547e4a18231fc9f0
+  languageName: node
+  linkType: hard
+
+"ws@npm:^7.2.0":
+  version: 7.5.13
+  resolution: "ws@npm:7.5.13"
+  peerDependencies:
+    bufferutil: ^4.0.1
+    utf-8-validate: ^5.0.2
+  peerDependenciesMeta:
+    bufferutil:
+      optional: true
+    utf-8-validate:
+      optional: true
+  checksum: 10c0/e223726bbda5768ed58ec9252d04eda7018ef380ea122bb94e595a4d7a02b5baeb423933936576fddb8fa51b642375f7ae814bf0f6f5d9a3ce290566578a8c5a
   languageName: node
   linkType: hard
 
